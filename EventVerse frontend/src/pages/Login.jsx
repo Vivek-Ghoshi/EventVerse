@@ -1,21 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Api from "../api";
+import { useNavigate } from "react-router-dom";
 
 
 
 const Login = () => {
-      
+     const navigate = useNavigate() ;
      const[email,setEmail] = useState('');
      const[password,setPassword] = useState('');
+     const[user,setUser] = useState({});
 
- const submitHandler = (e)=>{
+ const submitHandler =async (e)=>{
      e.preventDefault();
      try {
-           // here we will call backend api to do further work
-     } catch (error) {
-        console.log(error.message)
-     }
- }
-    return (
+      const LoggedInUser = {email, password}
+      setUser(LoggedInUser)
+          const {data} = await Api.post('/auth/login',user);
+          localStorage.setItem('token',data.token);
+          localStorage.setItem('role',data.role)
+          navigate('/home')
+    
+} catch (error) {
+  console.log(error.message)
+}
+     setEmail('')
+     setPassword('')
+    }
+
+return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           {/* Header */}
@@ -91,7 +103,7 @@ const Login = () => {
               <div className="text-center mt-4">
                 <span className="text-gray-400">Don't have an account? </span>
                 <a 
-                  href="#" 
+                  href="/" 
                   className="text-blue-400 hover:text-blue-300 font-medium"
                 >
                   Sign up

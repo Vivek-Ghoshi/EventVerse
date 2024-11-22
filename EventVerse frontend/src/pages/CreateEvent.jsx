@@ -1,20 +1,33 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Api from "../api";
 
 const CreateEvent = () => {
-    const [title,setTitle] = useState('')
-    const [description,setDescription] = useState('')
+    const [title,setTitle] = useState('');
+    const [host,setHost] = useState('');
+    const [description,setDescription] = useState('');
     const [date,setDate] = useState('');
     const [time,setTime] = useState('');
-    const [venue,setVenue] = useState();
-    const [ticket,setTicket] = useState('');
+    const [venue,setVenue] = useState('');
+    const [maxTickets,setMaxTickets] = useState('');
     const [category,setCategory] = useState('');
-    const [file,setFile] = useState();
+    const [file,setFile] = useState('');
+    const[event,setEvent] = useState({});
  
-    const submitHandler = (e)=>{
-      e.preventDefault();
-      console.log({title,description,date,time,venue,ticket,category,file})
+    const submitHandler = async (e)=>{
+      try {
+        e.preventDefault();
+        const newEvent = {title,host,description,date,time,venue,maxTickets,category,file}
+        console.log(newEvent)
+       
+        const {data} = await Api.post('/host/create-event',newEvent)
+        console.log(data)
+
+      } catch (error) {
+        console.log(error.message)
+      }
+      
     }
 
     return (
@@ -22,7 +35,7 @@ const CreateEvent = () => {
       <Header/>
       <div className="min-h-screen bg-gray-900 text-gray-100 p-6">
         <div className="max-w-4xl mx-auto">
-          {/* Header */}
+          
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-blue-400">Create New Event</h1>
             <p className="text-gray-400 mt-2">Fill in the details to create a new event</p>
@@ -37,6 +50,16 @@ const CreateEvent = () => {
                 <input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
+                  type="text"
+                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-gray-100 focus:outline-none focus:border-blue-500"
+                  placeholder="Enter event title"
+                />
+              </div>
+              <div>
+                <label className="block text-blue-400 mb-2">Event Host</label>
+                <input
+                  value={host}
+                  onChange={(e) => setHost(e.target.value)}
                   type="text"
                   className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-gray-100 focus:outline-none focus:border-blue-500"
                   placeholder="Enter event title"
@@ -93,8 +116,8 @@ const CreateEvent = () => {
               <div>
                 <label className="block text-blue-400 mb-2">Ticket Limit</label>
                 <input
-                  value={ticket}
-                  onChange={(e)=> setTicket(e.target.value)}
+                  value={maxTickets}
+                  onChange={(e)=> setMaxTickets(e.target.value)}
                   type="number"
                   min="1"
                   className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-gray-100 focus:outline-none focus:border-blue-500"

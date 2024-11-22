@@ -15,12 +15,12 @@ const App = () => {
     
      
          <Routes>
-          <Route path='/' element={<Home/>}/>
+          <Route path='/home' element={<Home/>}/>
           <Route path='/event/:id' element={<EventDetails/>}/>
           <Route path='/create-event' element={<CreateEvent/>}/>
           <Route path='/dashboard' element={<Dashboard/>}/>
           <Route path='/login' element={<Login/>} />
-          <Route path='/register' element={<Register/>} />
+          <Route path='/' element={<Register/>} />
          </Routes>
      
     </>

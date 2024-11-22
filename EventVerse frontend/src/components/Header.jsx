@@ -14,26 +14,26 @@ const Header = () => {
 
         <div className="flex items-center  gap-6">
           <div className="text-gray-600 hover:text-blue-600 text-white transition-colors">
-            Home
+           <a href="/home">Home</a> 
           </div>
          
             <>
               <div className="text-gray-600 hover:text-blue-600 text-white transition-colors">
-                Dashboard
+              <a href="/dashboard">Dashboard</a> 
               </div>
               <button className="text-gray-600 hover:text-blue-600 text-white transition-colors">
-                Logout
+              <a href="/register">Logout</a> 
               </button>
             </>
           
             <>
              <div className="text-gray-600 hover:text-blue-600 text-white transition-colors">
-                Login
+             <a href="/login">Login</a> 
               </div>
               <div
                 className="bg-blue-600 text-white px-4 py-2 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
-                Register
+                <a href="/register">Create Account</a> 
               </div>
             </>
         

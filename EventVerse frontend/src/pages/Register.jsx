@@ -1,16 +1,37 @@
+import axios from "axios";
 import React, { useState } from "react";
+import Api from "../api";
+import { useNavigate } from "react-router-dom";
 
 
 const Register = () => {
-   
+  const navigate = useNavigate(); 
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
+  const [name,setName] = useState('');
   const [role,setRole] = useState('attendee');
+  const [user,setUser] = useState({});
 
+ 
+  const registerHandler = async (e)=>{
+    e.preventDefault();
+    const newUser = {email,password,name,role};
+    setUser(newUser)
+    const userData = {...user}
+    const {data} = await Api.post('/auth/register',userData);
+    localStorage.setItem("token",data.token);
+    localStorage.setItem('role',data.role)
+    navigate('/home')
+   
+    setEmail('')
+    setPassword('')
+    setName('')
+    setRole('')
+  }
 
   return (
     <div className="h-screen bg-gray-900 flex flex-col">
-      {/* Centered Header - reduced vertical padding */}
+      
       <div className="text-center py-8">
         <h2 className="text-3xl font-bold text-blue-400">Create Account</h2>
         <p className="mt-1 text-gray-400">
@@ -18,13 +39,13 @@ const Register = () => {
         </p>
       </div>
 
-      {/* Two Panel Layout - adjusted padding and gap */}
+  
       <div className="flex-1 flex flex-col md:flex-row gap-6 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full mb-4">
-        {/* Left Panel - Registration Form */}
+        
         <div className="flex-1 h-full">
           <div className="bg-gray-800 rounded-lg px-6 py-4 h-full">
-            <form className="space-y-3">
-              {/* Email Field - reduced height */}
+            <form onSubmit={registerHandler} className="space-y-3">
+            
               <div>
                 <label
                   htmlFor="email"
@@ -69,13 +90,15 @@ const Register = () => {
                   htmlFor="confirmPassword"
                   className="block text-sm font-medium text-blue-400 mb-1"
                 >
-                  Confirm Password
+                  Name
                 </label>
                 <input
-                  id="confirmPassword"
-                  type="password"
+                  value={name}
+                  onChange={(e)=>setName(e.target.value)}
+                  id="name"
+                  type="text"
                   className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-sm text-gray-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  placeholder="Confirm your password"
+                  placeholder="Type your Name"
                 />
               </div>
 
@@ -143,6 +166,7 @@ const Register = () => {
               {/* Register Button - reduced padding */}
               <button
                 type="submit"
+                onClick={registerHandler}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200 text-sm mt-8"
               >
                 Create Account
@@ -158,7 +182,7 @@ const Register = () => {
               <div className="text-center">
                 <span className="text-gray-400">Already have an account? </span>
                 <a
-                  href="#"
+                  href="/login"
                   className="text-blue-400 hover:text-blue-300 font-medium"
                 >
                   Sign in
